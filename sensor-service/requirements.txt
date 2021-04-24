@@ -1,1 +1,2 @@
 Flask==1.1.2
+smbus==1.1.post2
