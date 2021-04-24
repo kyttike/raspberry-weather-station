@@ -7,4 +7,4 @@ echo 'Activating project environment'
 source ./venv/bin/activate
 
 echo 'Installing dependencies'
-pip install -r requirements.txt
+pip3 install -r requirements.txt

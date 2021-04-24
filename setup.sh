@@ -3,5 +3,5 @@
 echo 'Setting up weather station project'
 
 cd sensor-service || exit
-sh setup.sh
+source setup.sh
 cd .. || exit
