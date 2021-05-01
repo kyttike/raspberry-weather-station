@@ -1,15 +1,12 @@
 from flask import Flask
-
-import bme280
+import air_sensor
 
 app = Flask(__name__)
 
-
 @app.route('/')
 def hello_world():
-    temperature, pressure, humidity = bme280.readBME280All()
-    return f'Temperature: {temperature}; Pressure: {pressure}; Humidity: {humidity}'
-
+    print('Hello')
+    return air_sensor.read_all()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
