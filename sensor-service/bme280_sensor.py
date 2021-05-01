@@ -1,4 +1,4 @@
-import bme280
+import RPi.bme280
 import smbus2
 
 port = 1
