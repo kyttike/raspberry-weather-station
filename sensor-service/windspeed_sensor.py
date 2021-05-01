@@ -5,6 +5,7 @@ import math
 wind_sensor = Button(5)
 count = 0
 radius_cm = 9.0
+anemometer_factor = 1.18
 
 
 def spin():
@@ -25,7 +26,7 @@ def get_reading():
     result = dist_cm
 
     reset_spins()
-    return result
+    return result * anemometer_factor
 
 
 wind_sensor.when_pressed = spin
