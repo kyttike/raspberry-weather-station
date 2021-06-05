@@ -1,5 +1,5 @@
 from flask import Flask
-import bme280_sensor
+import bme680_sensor
 import rainfall_sensor
 import windspeed_sensor
 
@@ -8,12 +8,12 @@ app = Flask(__name__)
 
 @app.route('/')
 def get_readings():
-    bme280_result = bme280_sensor.read_all()
+    bme680_result = bme680_sensor.get_reading()
     rainfall_result = rainfall_sensor.get_reading()
     windspeed_result = windspeed_sensor.get_reading()
 
     return {
-        "bme280": bme280_result,
+        "bme680": bme680_result,
         "rain": rainfall_result,
         "wind": windspeed_result,
     }

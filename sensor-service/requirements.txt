@@ -3,3 +3,4 @@ smbus==1.1.post2
 RPi.bme280==0.2.3
 RPi.GPIO==0.7.0
 gpiozero==1.6.2
+adafruit-circuitpython-bme680==3.3.3
