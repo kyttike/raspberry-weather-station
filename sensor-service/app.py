@@ -2,6 +2,7 @@ from flask import Flask
 import bme680_sensor
 import rainfall_sensor
 import windspeed_sensor
+import winddirection_sensor
 import datetime
 
 app = Flask(__name__)
@@ -12,13 +13,15 @@ def get_readings():
     bme680_result = bme680_sensor.get_reading()
     rainfall_result = rainfall_sensor.get_reading()
     windspeed_result = windspeed_sensor.get_reading()
+    winddirection_result = winddirection_sensor.get_reading()
 
     return {
         "timestamp": datetime.datetime.utcnow().isoformat(),
         "bme680": bme680_result,
+        "windDirection": winddirection_result,
         "stateful": {
             "rain": rainfall_result,
-            "wind": windspeed_result,
+            "windSpeed": windspeed_result,
         }
     }
 

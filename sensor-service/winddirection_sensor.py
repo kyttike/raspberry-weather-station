@@ -35,6 +35,3 @@ def get_reading():
         if abs(voltage - closest_voltage) > abs(voltage - potential_voltage):
             closest_voltage = potential_voltage
     return voltage_map[closest_voltage]
-
-
-get_reading()
