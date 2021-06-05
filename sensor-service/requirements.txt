@@ -3,4 +3,6 @@ smbus==1.1.post2
 RPi.bme280==0.2.3
 RPi.GPIO==0.7.0
 gpiozero==1.6.2
+Adafruit-Blinka==6.10.1
 adafruit-circuitpython-bme680==3.3.3
+adafruit-circuitpython-ads1x15==2.2.8
