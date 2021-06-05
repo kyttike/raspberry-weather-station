@@ -14,9 +14,9 @@ def get_readings():
     windspeed_result = windspeed_sensor.get_reading()
 
     return {
+        "timestamp": datetime.datetime.utcnow().isoformat(),
         "bme680": bme680_result,
         "stateful": {
-            "timeOfMeasurement": datetime.datetime.utcnow().isoformat(),
             "rain": rainfall_result,
             "wind": windspeed_result,
         }
