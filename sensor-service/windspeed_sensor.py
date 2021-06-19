@@ -25,10 +25,12 @@ def get_reading():
     count = 0
 
     current_time = time.time()
-    time_diff = last_measurement - current_time
+    time_diff = current_time - last_measurement
     last_measurement = current_time
 
     return dist_meters / time_diff
+
+    return abs(dist_meters / time_diff)
 
 
 wind_sensor.when_pressed = spin
