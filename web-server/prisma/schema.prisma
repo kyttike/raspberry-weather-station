@@ -15,6 +15,7 @@ model RaspberrySlowEntry {
     bme680Temperature   Float
     bme680Pressure      Float
     bme680Humidity      Float
+    bme680Gas           Float
     rainfall            Float
     createdAt           DateTime    @default(now())
     updatedAt           DateTime    @updatedAt

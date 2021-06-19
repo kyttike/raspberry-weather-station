@@ -10,4 +10,5 @@ def get_reading():
         "temperature": sensor.temperature,
         "pressure": sensor.pressure,
         "humidity": sensor.humidity,
+        "gas": sensor.gas,
     }
