@@ -37,4 +37,4 @@ lerna-debug.log*
 .env
 
 # Prisma engine
-/primsa_engine
+/prisma_engine
