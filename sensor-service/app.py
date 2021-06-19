@@ -8,22 +8,44 @@ import datetime
 app = Flask(__name__)
 
 
-@app.route('/')
-def get_readings():
+def get_slow_readings():
     bme680_result = bme680_sensor.get_reading()
     rainfall_result = rainfall_sensor.get_reading()
+
+    return {
+        "bme680": bme680_result,
+        "stateful": {
+            "rain": rainfall_result,
+        }
+    }
+
+
+def get_fast_readings():
     windspeed_result = windspeed_sensor.get_reading()
     winddirection_result = winddirection_sensor.get_reading()
 
     return {
-        "timestamp": datetime.datetime.utcnow().isoformat(),
-        "bme680": bme680_result,
         "windDirection": winddirection_result,
         "stateful": {
-            "rain": rainfall_result,
             "windSpeed": windspeed_result,
         }
     }
+
+
+@app.route('/fast')
+def get_fast():
+    return {
+        "timeStamp": datetime.datetime.utcnow().isoformat(),
+        "fast": get_fast_readings(),
+    }
+
+
+@app.route('/all')
+def get_all(): return {
+    "timeStamp": datetime.datetime.utcnow().isoformat(),
+    "fast": get_fast_readings(),
+    "slow": get_slow_readings(),
+}
 
 
 if __name__ == '__main__':
