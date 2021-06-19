@@ -17,7 +17,6 @@ npm install pm2 -g
 ```
 
 TODO: Turn this into a proper readme
-TODO: maybe prometheus?
 
 ## Startup
 
