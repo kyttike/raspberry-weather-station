@@ -9,3 +9,16 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+model RaspberryEntry {
+    id                  Int         @default(autoincrement()) @id
+    bme680Temperature   Float
+    bme680Pressure      Float
+    bme680Humidity      Float
+    windDirection       Int
+    windSpeed           Float
+    rainfall            Float
+    createdAt           DateTime    @default(now())
+    updatedAt           DateTime    @updatedAt
+    deletedAt           DateTime?
+}
