@@ -24,7 +24,7 @@ model RaspberrySlowEntry {
 
 model RaspberryFastEntry {
     id                  Int         @default(autoincrement()) @id
-    windDirection       Int
+    windDirection       Float
     windSpeed           Float
     createdAt           DateTime    @default(now())
     updatedAt           DateTime    @updatedAt
