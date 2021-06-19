@@ -8,6 +8,7 @@
 
 Built for Raspbery Pi 4B
 
+[Prisma engine for Raspberry Pi 4B](https://github.com/pantharshit00/prisma-rpi-builds)
 
 
 This might be helpful too xd
