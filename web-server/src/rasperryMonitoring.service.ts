@@ -1,7 +1,7 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { PrismaService } from './prisma.service';
 import { ConfigService } from '@nestjs/config';
+import { PostgresService } from "./postgres.service";
 
 interface RasperryData {
   fast: {
@@ -27,7 +27,7 @@ interface RasperryData {
 @Injectable()
 export class RasperryMonitoringService {
   constructor(
-    private prisma: PrismaService,
+    private postgresService: PostgresService,
     private httpService: HttpService,
     private configService: ConfigService,
   ) {
@@ -59,22 +59,7 @@ export class RasperryMonitoringService {
       },
     } = allEntries.data;
 
-    await this.prisma.raspberryFastEntry.create({
-      data: {
-        windDirection,
-        windSpeed,
-      },
-    });
-
-    await this.prisma.raspberrySlowEntry.create({
-      data: {
-        bme680Humidity: humidity,
-        bme680Pressure: pressure,
-        bme680Temperature: temperature,
-        bme680Gas: gas,
-        rainfall: rain,
-      },
-    });
+    console.log(allEntries.data);
   }
 
   private async getFastEntries() {
@@ -87,12 +72,7 @@ export class RasperryMonitoringService {
       stateful: { windSpeed },
     } = fastEntries.data.fast;
 
-    await this.prisma.raspberryFastEntry.create({
-      data: {
-        windDirection,
-        windSpeed,
-      },
-    });
+    console.log(fastEntries.data);
   }
 
   @Cron(CronExpression.EVERY_10_SECONDS)
