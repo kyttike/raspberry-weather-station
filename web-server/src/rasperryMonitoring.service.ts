@@ -1,7 +1,7 @@
-import { HttpService, Injectable } from '@nestjs/common';
+import { HttpService, Injectable, OnModuleInit } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
-import { PostgresService } from "./postgres.service";
+import { PostgresService } from './postgres.service';
 
 interface RasperryData {
   fast: {
@@ -25,7 +25,7 @@ interface RasperryData {
 }
 
 @Injectable()
-export class RasperryMonitoringService {
+export class RasperryMonitoringService implements OnModuleInit {
   constructor(
     private postgresService: PostgresService,
     private httpService: HttpService,
@@ -33,9 +33,12 @@ export class RasperryMonitoringService {
   ) {
     this.weatherStationUrl =
       this.configService.get<string>('WEATHERSTATION_URL');
+  }
 
+  async onModuleInit() {
     // Do an initial measurement to reset the state
-    this.httpService.get<Required<RasperryData>>(
+    console.log('Flushing stale state');
+    await this.httpService.get<Required<RasperryData>>(
       `${this.weatherStationUrl}/all`,
     );
   }
@@ -43,45 +46,46 @@ export class RasperryMonitoringService {
   private readonly weatherStationUrl: string;
   private counter = 0;
 
-  private async getAllEntries() {
-    const allEntries = await this.httpService
-      .get<Required<RasperryData>>(`${this.weatherStationUrl}/all`)
-      .toPromise();
-
-    const {
-      fast: {
-        windDirection,
-        stateful: { windSpeed },
-      },
-      slow: {
-        bme680: { humidity, pressure, temperature, gas },
-        stateful: { rain },
-      },
-    } = allEntries.data;
-
-    console.log(allEntries.data);
-  }
-
-  private async getFastEntries() {
-    const fastEntries = await this.httpService
-      .get<RasperryData>(`${this.weatherStationUrl}/fast`)
-      .toPromise();
-
+  private async saveToDatabase(data: RasperryData) {
     const {
       windDirection,
       stateful: { windSpeed },
-    } = fastEntries.data.fast;
+    } = data.fast;
 
-    console.log(fastEntries.data);
+    const pool = this.postgresService.getPool();
+    await pool.query(
+      'INSERT INTO "RaspberryFastEntry"("windSpeed", "windDirection") VALUES($1, $2)',
+      [windSpeed, windDirection],
+    );
+
+    if (!data.slow) {
+      return;
+    }
+
+    const {
+      bme680: { humidity, pressure, temperature, gas },
+      stateful: { rain },
+    } = data.slow;
+
+    await pool.query(
+      'INSERT INTO "RaspberrySlowEntry"("bme680Humidity", "bme680Pressure", "bme680Temperature", "bme680Gas", "rainfall") VALUES ($1, $2, $3, $4, $5)',
+      [humidity, pressure, temperature, gas, rain],
+    );
   }
 
   @Cron(CronExpression.EVERY_10_SECONDS)
   async measureRaspberry() {
     try {
       if (this.counter === 5) {
-        await this.getAllEntries();
+        const { data } = await this.httpService
+          .get<Required<RasperryData>>(`${this.weatherStationUrl}/all`)
+          .toPromise();
+        await this.saveToDatabase(data);
       } else {
-        await this.getFastEntries();
+        const { data } = await this.httpService
+          .get<RasperryData>(`${this.weatherStationUrl}/fast`)
+          .toPromise();
+        await this.saveToDatabase(data);
       }
     } catch (e) {
       console.log(e);
