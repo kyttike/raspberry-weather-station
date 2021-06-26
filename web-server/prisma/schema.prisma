@@ -12,19 +12,19 @@ generator client {
 
 model RaspberrySlowEntry {
     id                  Int         @default(autoincrement()) @id
-    bme680Temperature   Float
-    bme680Pressure      Float
-    bme680Humidity      Float
-    bme680Gas           Float
-    rainfall            Float
+    bme680Temperature   Float?
+    bme680Pressure      Float?
+    bme680Humidity      Float?
+    bme680Gas           Float?
+    rainfall            Float?
     createdAt           DateTime    @default(now())
     deletedAt           DateTime?
 }
 
 model RaspberryFastEntry {
     id                  Int         @default(autoincrement()) @id
-    windDirection       Float
-    windSpeed           Float
+    windDirection       Float?
+    windSpeed           Float?
     createdAt           DateTime    @default(now())
     deletedAt           DateTime?
 }

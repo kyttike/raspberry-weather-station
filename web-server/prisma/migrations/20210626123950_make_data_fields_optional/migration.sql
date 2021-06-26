@@ -1,0 +1,10 @@
+-- AlterTable
+ALTER TABLE "RaspberryFastEntry" ALTER COLUMN "windDirection" DROP NOT NULL,
+ALTER COLUMN "windSpeed" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "RaspberrySlowEntry" ALTER COLUMN "bme680Temperature" DROP NOT NULL,
+ALTER COLUMN "bme680Pressure" DROP NOT NULL,
+ALTER COLUMN "bme680Humidity" DROP NOT NULL,
+ALTER COLUMN "rainfall" DROP NOT NULL,
+ALTER COLUMN "bme680Gas" DROP NOT NULL;
