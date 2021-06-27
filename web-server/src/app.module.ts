@@ -9,6 +9,6 @@ import { PostgresService } from './postgres.service';
 @Module({
   imports: [ScheduleModule.forRoot(), ConfigModule.forRoot(), HttpModule],
   controllers: [AppController],
-  providers: [AppService, PostgresService, RasperryMonitoringService],
+  providers: [AppService, PostgresService],
 })
 export class AppModule {}

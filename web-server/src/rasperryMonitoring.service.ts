@@ -2,25 +2,11 @@ import { HttpService, Injectable, OnModuleInit } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
 import { PostgresService } from './postgres.service';
+import { FastRaspberrySensorData, SlowRaspberrySensorData } from './types';
 
 interface RasperryData {
-  fast: {
-    windDirection: number;
-    stateful: {
-      windSpeed: number;
-    };
-  };
-  slow?: {
-    bme680: {
-      humidity: number;
-      pressure: number;
-      temperature: number;
-      gas: number;
-    };
-    stateful: {
-      rain: number;
-    };
-  };
+  fast: FastRaspberrySensorData;
+  slow?: SlowRaspberrySensorData;
   timeStamp: string;
 }
 
@@ -55,7 +41,7 @@ export class RasperryMonitoringService implements OnModuleInit {
     const pool = this.postgresService.getPool();
     await pool.query(
       'INSERT INTO "RaspberryFastEntry"("windSpeed", "windDirection") VALUES($1, $2)',
-      [windSpeed, windDirection],
+      [windSpeed ?? null, windDirection ?? null],
     );
 
     if (!data.slow) {
@@ -69,7 +55,13 @@ export class RasperryMonitoringService implements OnModuleInit {
 
     await pool.query(
       'INSERT INTO "RaspberrySlowEntry"("bme680Humidity", "bme680Pressure", "bme680Temperature", "bme680Gas", "rainfall") VALUES ($1, $2, $3, $4, $5)',
-      [humidity, pressure, temperature, gas, rain],
+      [
+        humidity ?? null,
+        pressure ?? null,
+        temperature ?? null,
+        gas ?? null,
+        rain ?? null,
+      ],
     );
   }
 
