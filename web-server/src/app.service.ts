@@ -6,7 +6,7 @@ import { FastRaspberryDBEntry, SlowRaspberryDBEntry } from './types';
 export class AppService {
   constructor(private postgresService: PostgresService) {}
 
-  async getData(): Promise<[FastRaspberryDBEntry[], SlowRaspberryDBEntry[]]> {
+  private async getDataRangeFromDB(): Promise<[FastRaspberryDBEntry[], SlowRaspberryDBEntry[]]> {
     const pool = this.postgresService.getPool();
     const datasets = await Promise.all([
       pool.query<FastRaspberryDBEntry>(`
@@ -23,5 +23,9 @@ export class AppService {
       `),
     ]);
     return [datasets[0].rows, datasets[1].rows];
+  }
+
+  async getData() {
+    return await this.getDataRangeFromDB();
   }
 }
