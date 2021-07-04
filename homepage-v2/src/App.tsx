@@ -1,14 +1,14 @@
 import React from 'react';
 import Header from './Header';
+import Overview from './Overview';
 
 function App() {
   return (
     <>
       <Header />
-      <main className="container mx-auto">
-        <div>
-          <div>HETKEILM</div>
-          <div>TÄNANE PÄEV</div>
+      <main>
+        <div className="container mx-auto">
+          <Overview />
         </div>
       </main>
     </>

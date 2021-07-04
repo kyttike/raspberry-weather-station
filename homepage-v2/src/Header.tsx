@@ -41,8 +41,9 @@ const Header = () => {
   const sunrise = getSunrise(coordinates[0], coordinates[1]);
   const sunset = getSunset(coordinates[0], coordinates[1]);
   return (
+    <>
     <header className="bg-white">
-      <div className="container mx-auto flex justify-between items-center">
+      <div className="container mx-auto flex justify-between items-center py-4">
         <div className='text-center'>
           <h1 className="text-3xl font-medium">Värska</h1>
           <p>{dateFormatter.format(Date.now())}</p>
@@ -70,6 +71,8 @@ const Header = () => {
         </div>
       </div>
     </header>
+      <div className='bg-gradient-to-b from-blue-100 to-transparent py-8'/>
+    </>
   );
 };
 
