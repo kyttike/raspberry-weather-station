@@ -1,7 +1,11 @@
 import React from 'react';
 import { getSunrise, getSunset } from 'sunrise-sunset-js';
-// @ts-ignore
-import { Moon, Hemisphere, LunarPhase } from 'lunarphase-js/dist/lunarphase-js.esm';
+import {
+  Moon,
+  Hemisphere,
+  LunarPhase,
+  // @ts-ignore
+} from 'lunarphase-js/dist/lunarphase-js.esm';
 
 const coordinates = [57.9547156, 27.6021553];
 const dateFormatter = new Intl.DateTimeFormat('et-EE', {
@@ -38,24 +42,32 @@ const Header = () => {
   const sunset = getSunset(coordinates[0], coordinates[1]);
   return (
     <header className="bg-white">
-      <div className="container mx-auto">
-        <h1 className="text-3xl font-medium">Värska</h1>
-        <p>{dateFormatter.format(Date.now())}</p>
+      <div className="container mx-auto flex justify-between items-center">
+        <div className='text-center'>
+          <h1 className="text-3xl font-medium">Värska</h1>
+          <p>{dateFormatter.format(Date.now())}</p>
+        </div>
 
-        <p className="flex items-center text-lg">
-          <span className="text-4xl mr-2">🌅</span>{' '}
-          {numberPadder(sunrise.getHours())}:
-          {numberPadder(sunrise.getMinutes())}
-        </p>
-        <p className="flex items-center text-lg">
-          <span className="text-4xl mr-2">🌇</span>{' '}
-          {numberPadder(sunset.getHours())}:{numberPadder(sunset.getMinutes())}
-        </p>
-        <p className="flex items-center">
-          <span className="text-4xl mr-2">
-            {Moon.lunarPhaseEmoji(new Date(), Hemisphere.NORTHERN)}
-          </span> {lunarPhaseTranslations(Moon.lunarPhase())}
-        </p>
+        <div>
+          <div className="flex">
+            <p className="flex items-center text-lg mr-4">
+              <span className="text-4xl mr-2">🌅</span>{' '}
+              {numberPadder(sunrise.getHours())}:
+              {numberPadder(sunrise.getMinutes())}
+            </p>
+            <p className="flex items-center text-lg mr-4">
+              <span className="text-4xl mr-2">🌇</span>{' '}
+              {numberPadder(sunset.getHours())}:
+              {numberPadder(sunset.getMinutes())}
+            </p>
+            <p className="flex items-center">
+              <span className="text-4xl mr-2">
+                {Moon.lunarPhaseEmoji(new Date(), Hemisphere.NORTHERN)}
+              </span>{' '}
+              {lunarPhaseTranslations(Moon.lunarPhase())}
+            </p>
+          </div>
+        </div>
       </div>
     </header>
   );
