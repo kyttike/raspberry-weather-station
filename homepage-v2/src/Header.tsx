@@ -20,19 +20,19 @@ const lunarPhaseTranslations = (lunarPhase: string) => {
   switch (lunarPhase) {
     case LunarPhase.NEW:
       return 'Kuu loomine';
-    case LunarPhase.WANING_CRESCENT:
+    case LunarPhase.WAXING_CRESCENT:
       return 'Noorkuu';
     case LunarPhase.FIRST_QUARTER:
       return 'Poolkuu esimene veerand';
-    case LunarPhase.WANING_GIBBOUS:
+    case LunarPhase.WAXING_GIBBOUS:
       return 'Kasvav kuu';
     case LunarPhase.FULL:
       return 'Täiskuu';
-    case LunarPhase.WAXING_GIBBOUS:
+    case LunarPhase.WANING_GIBBOUS:
       return 'Kahanev kuu';
     case LunarPhase.LAST_QUARTER:
       return 'Poolkuu viimane veerand';
-    case LunarPhase.WAXING_CRESCENT:
+    case LunarPhase.WANING_CRESCENT:
       return 'Vanakuu';
   }
 };
@@ -42,36 +42,36 @@ const Header = () => {
   const sunset = getSunset(coordinates[0], coordinates[1]);
   return (
     <>
-    <header className="bg-white">
-      <div className="container mx-auto flex justify-between items-center py-4">
-        <div className='text-center'>
-          <h1 className="text-3xl font-medium">Värska</h1>
-          <p>{dateFormatter.format(Date.now())}</p>
-        </div>
+      <header className="bg-white">
+        <div className="container mx-auto flex justify-between items-center py-4">
+          <div className="text-center">
+            <h1 className="text-3xl font-medium">Värska</h1>
+            <p>{dateFormatter.format(Date.now())}</p>
+          </div>
 
-        <div>
-          <div className="flex">
-            <p className="flex items-center text-lg mr-4">
-              <span className="text-4xl mr-2">🌅</span>{' '}
-              {numberPadder(sunrise.getHours())}:
-              {numberPadder(sunrise.getMinutes())}
-            </p>
-            <p className="flex items-center text-lg mr-4">
-              <span className="text-4xl mr-2">🌇</span>{' '}
-              {numberPadder(sunset.getHours())}:
-              {numberPadder(sunset.getMinutes())}
-            </p>
-            <p className="flex items-center">
-              <span className="text-4xl mr-2">
-                {Moon.lunarPhaseEmoji(new Date(), Hemisphere.NORTHERN)}
-              </span>{' '}
-              {lunarPhaseTranslations(Moon.lunarPhase())}
-            </p>
+          <div>
+            <div className="flex">
+              <p className="flex items-center text-lg mr-4">
+                <span className="text-4xl mr-2">🌅</span>{' '}
+                {numberPadder(sunrise.getHours())}:
+                {numberPadder(sunrise.getMinutes())}
+              </p>
+              <p className="flex items-center text-lg mr-4">
+                <span className="text-4xl mr-2">🌇</span>{' '}
+                {numberPadder(sunset.getHours())}:
+                {numberPadder(sunset.getMinutes())}
+              </p>
+              <p className="flex items-center">
+                <span className="text-4xl mr-2">
+                  {Moon.lunarPhaseEmoji(new Date(), Hemisphere.NORTHERN)}
+                </span>{' '}
+                {lunarPhaseTranslations(Moon.lunarPhase())}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </header>
-      <div className='bg-gradient-to-b from-blue-100 to-transparent py-8'/>
+      </header>
+      <div className="bg-gradient-to-b from-blue-100 to-transparent py-8" />
     </>
   );
 };
