@@ -30,3 +30,5 @@ export interface SlowRaspberryDBEntry {
   bme680Gas?: number;
   rainfall?: number;
 }
+
+export type ApiData = [FastRaspberryDBEntry[], SlowRaspberryDBEntry[]];

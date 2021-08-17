@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { PostgresService } from './postgres.service';
-import { FastRaspberryDBEntry, SlowRaspberryDBEntry } from './types';
+import { ApiData, FastRaspberryDBEntry, SlowRaspberryDBEntry } from './types';
 
 @Injectable()
 export class AppService {
+  private lastQueryTimestamp: Date = null;
+  private cachedData: ApiData = null;
+
   constructor(private postgresService: PostgresService) {}
 
-  private async getDataRangeFromDB(): Promise<
-    [FastRaspberryDBEntry[], SlowRaspberryDBEntry[]]
-  > {
+  private async getDataRangeFromDB(): Promise<ApiData> {
     const pool = this.postgresService.getPool();
     const datasets = await Promise.all([
       pool.query<FastRaspberryDBEntry>(`
@@ -46,7 +47,7 @@ export class AppService {
     return result >= 0 ? result : result + 360;
   }
 
-  async getData() {
+  private async getDatabaseData(): Promise<ApiData> {
     const [fastData, slowData] = await this.getDataRangeFromDB();
     const concentratedFastData: FastRaspberryDBEntry[] = [];
     let buffer: FastRaspberryDBEntry[] = [];
@@ -75,5 +76,22 @@ export class AppService {
       buffer.push(fastDatum);
     }
     return [concentratedFastData, slowData];
+  }
+
+  async getData() {
+    let shouldGetNewData = false;
+    if (this.cachedData === null || this.lastQueryTimestamp === null) {
+      shouldGetNewData = true;
+    } else if (Date.now() - this.lastQueryTimestamp.getTime() > 60 * 1000) {
+      shouldGetNewData = true;
+    }
+
+    if (shouldGetNewData) {
+      this.cachedData = await this.getDatabaseData();
+      this.lastQueryTimestamp = new Date();
+      return this.cachedData;
+    } else {
+      return this.cachedData;
+    }
   }
 }
