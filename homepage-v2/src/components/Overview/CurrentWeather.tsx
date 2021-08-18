@@ -32,7 +32,7 @@ const CurrentWeather = ({ data: [fastData, slowData] }: Props) => {
         <p>Temperatuur: {temperature} °C</p>
         <p>Õhurõhk: {pressure} hPa</p>
         <p>Õhuniiskus: {humidity}%</p>
-        <p>Viimase 5 minuti vihm: ${rain} mm</p>
+        <p>Viimase 5 minuti vihm: {rain} mm</p>
       </Card>
     </div>
   );
