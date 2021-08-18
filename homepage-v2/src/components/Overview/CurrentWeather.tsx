@@ -12,22 +12,27 @@ const CurrentWeather = ({ data: [fastData, slowData] }: Props) => {
     return null;
   }
 
-  console.log([fastData, slowData]);
+  const data = [...slowData].reverse();
 
-  const { bme680Temperature, bme680Pressure, bme680Gas, bme680Humidity } =
-    slowData[0];
+  const { bme680Temperature, bme680Pressure, bme680Humidity } =
+    data[0];
   const temperature = roundWithDecimalPlaces(bme680Temperature, 1);
   const pressure = roundWithDecimalPlaces(bme680Pressure, 1);
   const humidity = roundWithDecimalPlaces(bme680Humidity, 1);
-  const gas = roundWithDecimalPlaces(bme680Gas, 1);
+
+  let rain = 0;
+  for (let i = 0; i < Math.min(5, data.length); i++) {
+    const datum = data[i];
+    rain = rain + datum.rainfall;
+  }
 
   return (
     <div className="flex">
       <Card>
         <p>Temperatuur: {temperature} °C</p>
-        <p>Õhurõhk: {pressure} hPa  </p>
+        <p>Õhurõhk: {pressure} hPa</p>
         <p>Õhuniiskus: {humidity}%</p>
-        <p>Gaasinäitaja: {gas}</p>
+        <p>Viimase 5 minuti vihm: ${rain} mm</p>
       </Card>
     </div>
   );
