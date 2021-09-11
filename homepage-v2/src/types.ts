@@ -11,4 +11,5 @@ export type SlowData = {
   bme680Pressure: number;
   bme680Temperature: number;
   rainfall: number;
+  createdAt: string;
 };

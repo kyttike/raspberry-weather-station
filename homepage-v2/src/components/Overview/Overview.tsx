@@ -19,7 +19,7 @@ const Overview = () => {
   return (
     <>
       <CurrentWeather data={data} />
-      <WeatherGraph />
+      <WeatherGraph data={data}/>
     </>
   );
 };
