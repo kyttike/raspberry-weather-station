@@ -71,7 +71,6 @@ const Header = () => {
           </div>
         </div>
       </header>
-      <div className="bg-gradient-to-b from-blue-100 to-transparent py-8" />
     </>
   );
 };

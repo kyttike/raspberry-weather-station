@@ -21,10 +21,11 @@ const CurrentWeather = ({ data: [fastData, slowData] }: Props) => {
   const humidity = roundWithDecimalPlaces(bme680Humidity, 1);
 
   let rain = 0;
-  for (let i = 0; i < Math.min(5, data.length); i++) {
+  for (let i = 0; i < data.length; i++) {
     const datum = data[i];
     rain = rain + datum.rainfall;
   }
+  rain = Math.round(rain * 10) / 10
 
   return (
     <div className="flex">
@@ -32,7 +33,7 @@ const CurrentWeather = ({ data: [fastData, slowData] }: Props) => {
         <p>Temperatuur: {temperature} °C</p>
         <p>Õhurõhk: {pressure} hPa</p>
         <p>Õhuniiskus: {humidity}%</p>
-        <p>Viimase 5 minuti sademed: {rain} mm</p>
+        <p>24h sademed: {rain} mm</p>
       </Card>
     </div>
   );
