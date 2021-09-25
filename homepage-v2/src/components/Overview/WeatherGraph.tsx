@@ -37,6 +37,28 @@ const combineData = (fastData: FastData[], slowData: SlowData[]) => {
 const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
   const [options, setOptions] = useState<Highcharts.Options>({});
   useEffect(() => {
+    Highcharts.setOptions({
+      lang: {
+        weekdays: ['Esmaspäev', 'Teisipäev', 'Kolmapäev', 'Neljapäev', 'Reede', 'Laupäev', 'Pühapäev'],
+        months: [
+          'jaanuar',
+          'veebrar',
+          'märts',
+          'aprill',
+          'mai',
+          'juuni',
+          'juuli',
+          'august',
+          'september',
+          'oktoober',
+          'november',
+          'detsember',
+        ],
+      },
+    });
+  }, []);
+
+  useEffect(() => {
     const combinedData = combineData(fastData, slowData);
     setOptions({
       xAxis: [
@@ -64,7 +86,7 @@ const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
           tickInterval: 24 * 3600 * 1000,
           labels: {
             format:
-              '{value:<span style="font-size: 12px; font-weight: bold">%a</span> %b %e}',
+              '{value:<span style="font-size: 12px; font-weight: bold">%A</span>, %e. %B}',
             align: 'left',
             x: 3,
             y: -5,
@@ -156,9 +178,13 @@ const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
         text: '',
       },
 
+      time: {
+        useUTC: false,
+      },
+
       series: [
         {
-          name: 'Temperature',
+          name: 'Temperatuur',
           type: 'spline',
           data: smoothLine(
             combinedData
@@ -190,7 +216,7 @@ const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
           turboThreshold: 1500,
         },
         {
-          name: 'Precipitation',
+          name: 'Sademed',
           type: 'column',
           data: combinedData.reduce(
             (acc: { result: any[]; sum: number }, curr) => {
@@ -233,7 +259,7 @@ const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
           },
         },
         {
-          name: 'Air pressure',
+          name: 'Õhurõhk',
           type: 'spline',
           data: combinedData
             .filter((datum) => {
