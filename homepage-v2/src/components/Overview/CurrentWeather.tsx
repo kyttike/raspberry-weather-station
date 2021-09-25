@@ -2,6 +2,13 @@ import React from 'react';
 import Card from '../../ui/Card';
 import { ApiData } from '../../types';
 import { roundWithDecimalPlaces } from '../../utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faThermometerHalf,
+  faWind,
+  faUmbrella,
+  faTint,
+} from '@fortawesome/free-solid-svg-icons';
 
 type Props = {
   data: ApiData;
@@ -36,11 +43,27 @@ const CurrentWeather = ({ data: [fastData, slowData] }: Props) => {
   return (
     <div className="flex">
       <Card>
-        <p>Temperatuur: {temperature} °C</p>
+        <p>
+          <FontAwesomeIcon icon={faThermometerHalf} />
+          <span
+            className={[
+              temperature > 0 ? 'text-red-500' : 'text-blue-600',
+              'text-xl',
+            ].join(' ')}
+          >
+            {temperature}°
+          </span>
+        </p>
         <p>Õhurõhk: {pressure} hPa</p>
-        <p>Õhuniiskus: {humidity}%</p>
-        <p>Tuule kiirus: {windSpeed} m/s</p>
-        <p>24h sademed: {rain} mm</p>
+        <p>
+          <FontAwesomeIcon icon={faTint} /> {humidity}%
+        </p>
+        <p>
+          <FontAwesomeIcon icon={faWind} /> {windSpeed} m/s
+        </p>
+        <p>
+          <FontAwesomeIcon icon={faUmbrella} /> {rain} mm (24h)
+        </p>
       </Card>
     </div>
   );
