@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import CurrentWeather from './CurrentWeather';
-import WeatherGraph from './WeatherGraph';
 import { ApiData } from '../../types';
 import TestGraph from './TestGraph';
+import WeatherGraph from './WeatherGraph';
 
 const Overview = () => {
   const [data, setData] = useState<ApiData>([[], []]);
@@ -21,7 +21,6 @@ const Overview = () => {
     <>
       <CurrentWeather data={data} />
       <WeatherGraph data={data}/>
-      <TestGraph data={data}/>
     </>
   );
 };

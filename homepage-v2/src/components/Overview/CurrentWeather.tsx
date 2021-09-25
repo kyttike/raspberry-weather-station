@@ -9,6 +9,7 @@ import {
   faUmbrella,
   faTint,
 } from '@fortawesome/free-solid-svg-icons';
+import airPressureIcon from './air-pressure.svg';
 
 type Props = {
   data: ApiData;
@@ -44,25 +45,34 @@ const CurrentWeather = ({ data: [fastData, slowData] }: Props) => {
     <div className="flex">
       <Card>
         <p>
-          <FontAwesomeIcon icon={faThermometerHalf} />
-          <span
-            className={[
-              temperature > 0 ? 'text-red-500' : 'text-blue-600',
-              'text-xl',
-            ].join(' ')}
-          >
-            {temperature}°
+          <span className={'inline-block w-6 mr-1'}>
+            <FontAwesomeIcon className={'float-right'} icon={faThermometerHalf} />
           </span>
-        </p>
-        <p>Õhurõhk: {pressure} hPa</p>
-        <p>
-          <FontAwesomeIcon icon={faTint} /> {humidity}%
+          <span>{temperature}°</span>
         </p>
         <p>
-          <FontAwesomeIcon icon={faWind} /> {windSpeed} m/s
+          <span className={'inline-block w-6 mr-1'}>
+            <FontAwesomeIcon className={'float-right'} icon={faWind} />
+          </span>
+          {windSpeed} m/s
         </p>
         <p>
-          <FontAwesomeIcon icon={faUmbrella} /> {rain} mm (24h)
+          <span className={'inline-block w-6 mr-1'}>
+            <FontAwesomeIcon className={'float-right'} icon={faUmbrella} />
+          </span>
+          {rain} mm (24h)
+        </p>
+        <p>
+          <span className={'inline-block w-6 mr-1'}>
+            <FontAwesomeIcon className={'float-right'} icon={faTint} />
+          </span>
+          {humidity}%
+        </p>
+        <p>
+          <span className={'inline-block w-6 mr-1'}>
+            <img className={'inline float-right w-4 h-4'} src={airPressureIcon} />
+          </span>
+          {pressure} hPa
         </p>
       </Card>
     </div>
