@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CurrentWeather from './CurrentWeather';
 import { ApiData } from '../../types';
-import TestGraph from './TestGraph';
 import WeatherGraph from './WeatherGraph';
 
 const Overview = () => {

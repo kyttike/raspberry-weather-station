@@ -6,6 +6,8 @@ import {
   LunarPhase,
   // @ts-ignore
 } from 'lunarphase-js/dist/lunarphase-js.esm';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 
 const coordinates = [57.9547156, 27.6021553];
 const dateFormatter = new Intl.DateTimeFormat('et-EE', {
@@ -43,27 +45,28 @@ const Header = () => {
   return (
     <>
       <header className="bg-white">
-        <div className="container mx-auto flex justify-between items-center py-4">
+        <div className="container mx-auto flex justify-between items-center py-4 px-2 ">
           <div className="text-center">
             <h1 className="text-3xl font-medium">Värska</h1>
             <p>{dateFormatter.format(Date.now())}</p>
           </div>
 
           <div>
-            <div className="flex">
-              <p className="flex items-center text-lg mr-4">
-                <span className="text-4xl mr-2">🌅</span>{' '}
-                {numberPadder(sunrise.getHours())}:
-                {numberPadder(sunrise.getMinutes())}
-              </p>
-              <p className="flex items-center text-lg mr-4">
-                <span className="text-4xl mr-2">🌇</span>{' '}
-                {numberPadder(sunset.getHours())}:
-                {numberPadder(sunset.getMinutes())}
-              </p>
+            <div className="md:flex items-center">
+              <span className="flex items-center md:mr-4">
+                <p className="flex items-center text-lg">
+                  {numberPadder(sunrise.getHours())}:
+                  {numberPadder(sunrise.getMinutes())}
+                </p>
+                <FontAwesomeIcon className={'text-3xl mx-2'} icon={faSun} />
+                <p className="flex items-center text-lg">
+                  {numberPadder(sunset.getHours())}:
+                  {numberPadder(sunset.getMinutes())}
+                </p>
+              </span>
               <p className="flex items-center">
-                <span className="text-4xl mr-2">
-                  {Moon.lunarPhaseEmoji(new Date(), Hemisphere.NORTHERN)}
+                <span className="mr-2">
+                  <FontAwesomeIcon className={'text-3xl'} icon={faMoon} />
                 </span>{' '}
                 {lunarPhaseTranslations(Moon.lunarPhase())}
               </p>
