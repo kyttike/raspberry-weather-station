@@ -222,6 +222,7 @@ const TestGraph = ({ data: [fastData, slowData], data }: Props) => {
           dataLabels: {
             enabled: true,
             formatter: function () {
+              // @ts-ignore
               if (this.y > 0) {
                 return this.y;
               }
@@ -247,6 +248,7 @@ const TestGraph = ({ data: [fastData, slowData], data }: Props) => {
               x: x.date,
               y: Math.round(x.bme680Pressure * 10) / 10,
             })),
+          // @ts-ignore
           color: Highcharts.getOptions().colors[2],
           marker: {
             enabled: false,
@@ -255,6 +257,7 @@ const TestGraph = ({ data: [fastData, slowData], data }: Props) => {
           tooltip: {
             valueSuffix: 'hPa',
           },
+          // @ts-ignore
           dashStyle: 'shortdot',
           yAxis: 2,
         },
