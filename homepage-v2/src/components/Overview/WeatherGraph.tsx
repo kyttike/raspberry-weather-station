@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ApiData, FastData, SlowData } from '../../types';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
+import Card from '../../ui/Card';
 
 type Props = {
   data: ApiData;
@@ -39,7 +40,7 @@ const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
   useEffect(() => {
     Highcharts.setOptions({
       lang: {
-        weekdays: ['Esmaspäev', 'Teisipäev', 'Kolmapäev', 'Neljapäev', 'Reede', 'Laupäev', 'Pühapäev'],
+        weekdays: ['Pühapäev', 'Esmaspäev', 'Teisipäev', 'Kolmapäev', 'Neljapäev', 'Reede', 'Laupäev'],
         months: [
           'jaanuar',
           'veebrar',
@@ -286,6 +287,11 @@ const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
       ],
     });
   }, [data]);
+  if (!slowData.length) {
+    return <Card>
+      Laeb...
+    </Card>
+  }
   return <HighchartsReact highcharts={Highcharts} options={options} />;
 };
 
