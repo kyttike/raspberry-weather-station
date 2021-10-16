@@ -304,4 +304,4 @@ const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
   return <HighchartsReact highcharts={Highcharts} options={options} />;
 };
 
-export default React.memo(WeatherGraph);
+export default WeatherGraph;

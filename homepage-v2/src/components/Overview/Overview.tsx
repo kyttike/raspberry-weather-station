@@ -41,7 +41,18 @@ const Overview = () => {
             </ToggleButton>
           </div>
         </div>
-        {tab === 'current' && <WeatherGraph data={data} />}
+        {tab === 'current' && (
+          <div className={'flex justify-center'}>
+            <div className={'max-w-screen-lg w-full'}>
+              <WeatherGraph data={data} />
+            </div>
+          </div>
+        )}
+        {tab === 'forecast' && (
+          <div className={'flex justify-center'}>
+            <img src="https://www.yr.no/en/content/2-587739/meteogram.svg" />
+          </div>
+        )}
       </Card>
     </>
   );
