@@ -49,8 +49,10 @@ const Overview = () => {
           </div>
         )}
         {tab === 'forecast' && (
-          <div className={'flex justify-center'}>
-            <img src="https://www.yr.no/en/content/2-587739/meteogram.svg" />
+          <div className={'flex md:justify-center overflow-x-scroll'}>
+            <div style={{ minWidth: '700px' }}>
+              <img src="https://www.yr.no/en/content/2-587739/meteogram.svg" />
+            </div>
           </div>
         )}
       </Card>
