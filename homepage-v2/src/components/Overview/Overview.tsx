@@ -49,7 +49,7 @@ const Overview = () => {
           </div>
         )}
         {tab === 'forecast' && (
-          <div className={'flex md:justify-center overflow-x-scroll'}>
+          <div className={'flex md:justify-center overflow-x-scroll md:overflow-auto'}>
             <div style={{ minWidth: '700px' }}>
               <img src="https://www.yr.no/en/content/2-587739/meteogram.svg" />
             </div>
