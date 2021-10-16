@@ -40,7 +40,15 @@ const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
   useEffect(() => {
     Highcharts.setOptions({
       lang: {
-        weekdays: ['Pühapäev', 'Esmaspäev', 'Teisipäev', 'Kolmapäev', 'Neljapäev', 'Reede', 'Laupäev'],
+        weekdays: [
+          'Pühapäev',
+          'Esmaspäev',
+          'Teisipäev',
+          'Kolmapäev',
+          'Neljapäev',
+          'Reede',
+          'Laupäev',
+        ],
         months: [
           'jaanuar',
           'veebrar',
@@ -288,11 +296,12 @@ const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
     });
   }, [data]);
   if (!slowData.length) {
-    return <Card>
-      Laeb...
-    </Card>
+    return <>Laeb...</>;
+  }
+  if (!options.series) {
+    return null;
   }
   return <HighchartsReact highcharts={Highcharts} options={options} />;
 };
 
-export default WeatherGraph;
+export default React.memo(WeatherGraph);
