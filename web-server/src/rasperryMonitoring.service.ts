@@ -12,6 +12,8 @@ interface RasperryData {
 
 @Injectable()
 export class RasperryMonitoringService implements OnModuleInit {
+  private readonly shouldSkipMonitoring: boolean = false;
+
   constructor(
     private postgresService: PostgresService,
     private httpService: HttpService,
@@ -19,9 +21,17 @@ export class RasperryMonitoringService implements OnModuleInit {
   ) {
     this.weatherStationUrl =
       this.configService.get<string>('WEATHERSTATION_URL');
+
+    if (this.weatherStationUrl.length === 0) {
+      this.shouldSkipMonitoring = true;
+    }
   }
 
   async onModuleInit() {
+    if (this.shouldSkipMonitoring) {
+      return;
+    }
+
     // Do an initial measurement to reset the state
     console.log('Flushing stale state');
     await this.httpService.get<Required<RasperryData>>(
@@ -67,6 +77,10 @@ export class RasperryMonitoringService implements OnModuleInit {
 
   @Cron(CronExpression.EVERY_10_SECONDS)
   async measureRaspberry() {
+    if (this.shouldSkipMonitoring) {
+      return;
+    }
+
     try {
       if (this.counter === 5) {
         const { data } = await this.httpService
