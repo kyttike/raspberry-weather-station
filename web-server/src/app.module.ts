@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { RasperryMonitoringService } from './rasperryMonitoring.service';
 import { PostgresService } from './postgres.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { PicturesService } from './pictures.service';
 import { join } from 'path';
 
 @Module({
@@ -23,6 +24,11 @@ import { join } from 'path';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, PostgresService, RasperryMonitoringService],
+  providers: [
+    AppService,
+    PostgresService,
+    RasperryMonitoringService,
+    PicturesService,
+  ],
 })
 export class AppModule {}
