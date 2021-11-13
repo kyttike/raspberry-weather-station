@@ -11,7 +11,7 @@ const Overview = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const apiData = await fetch('api/data').then(
+      const apiData = await fetch(`${location.origin}/api/data`).then(
         (res) => res.json(),
       );
       setData(apiData);
