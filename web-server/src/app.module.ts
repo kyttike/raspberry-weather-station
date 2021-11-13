@@ -5,9 +5,23 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RasperryMonitoringService } from './rasperryMonitoring.service';
 import { PostgresService } from './postgres.service';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
-  imports: [ScheduleModule.forRoot(), ConfigModule.forRoot(), HttpModule],
+  imports: [
+    ScheduleModule.forRoot(),
+    ConfigModule.forRoot(),
+    HttpModule,
+    ServeStaticModule.forRoot({
+      serveRoot: '/pictures',
+      rootPath: join(__dirname, '..', 'pictures'),
+      serveStaticOptions: {
+        redirect: false,
+        index: false,
+      },
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService, PostgresService, RasperryMonitoringService],
 })
