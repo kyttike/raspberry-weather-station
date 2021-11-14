@@ -4,6 +4,7 @@ import { ApiData } from '../../types';
 import WeatherGraph from './WeatherGraph';
 import Card from '../../ui/Card';
 import ToggleButton from '../../ui/ToggleButton';
+import { getApiUrl } from '../../utils';
 
 const Overview = () => {
   const [data, setData] = useState<ApiData>([[], []]);
@@ -11,8 +12,8 @@ const Overview = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const apiData = await fetch(`${location.origin}/api/data`).then(
-        (res) => res.json(),
+      const apiData = await fetch(getApiUrl('api/data')).then((res) =>
+        res.json(),
       );
       setData(apiData);
     };
@@ -49,7 +50,11 @@ const Overview = () => {
           </div>
         )}
         {tab === 'forecast' && (
-          <div className={'flex md:justify-center overflow-x-scroll md:overflow-auto'}>
+          <div
+            className={
+              'flex md:justify-center overflow-x-scroll md:overflow-auto'
+            }
+          >
             <div style={{ minWidth: '700px' }}>
               <img src="https://www.yr.no/en/content/2-587739/meteogram.svg" />
             </div>
