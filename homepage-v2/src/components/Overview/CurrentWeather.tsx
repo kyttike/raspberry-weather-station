@@ -17,7 +17,16 @@ type Props = {
 
 const CurrentWeather = ({ data: [fastData, slowData] }: Props) => {
   if (slowData.length === 0) {
-    return null;
+    return (
+      <div className="flex">
+        <Card>
+          <div className='h-24'>
+
+          </div>
+          Laeb...
+        </Card>
+      </div>
+    );
   }
 
   const data = [...slowData].reverse();
@@ -46,7 +55,10 @@ const CurrentWeather = ({ data: [fastData, slowData] }: Props) => {
       <Card>
         <p>
           <span className={'inline-block w-6 mr-1'}>
-            <FontAwesomeIcon className={'float-right'} icon={faThermometerHalf} />
+            <FontAwesomeIcon
+              className={'float-right'}
+              icon={faThermometerHalf}
+            />
           </span>
           <span>{temperature}°</span>
         </p>
@@ -70,7 +82,10 @@ const CurrentWeather = ({ data: [fastData, slowData] }: Props) => {
         </p>
         <p>
           <span className={'inline-block w-6 mr-1'}>
-            <img className={'inline float-right w-4 h-4'} src={airPressureIcon} />
+            <img
+              className={'inline float-right w-4 h-4'}
+              src={airPressureIcon}
+            />
           </span>
           {pressure} hPa
         </p>

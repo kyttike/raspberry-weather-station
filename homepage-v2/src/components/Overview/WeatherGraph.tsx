@@ -296,7 +296,7 @@ const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
     });
   }, [data]);
   if (!slowData.length) {
-    return <>Laeb...</>;
+    return <div className="h-48">Laeb...</div>;
   }
   if (!options.series) {
     return null;
