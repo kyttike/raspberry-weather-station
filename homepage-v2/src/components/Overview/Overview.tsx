@@ -12,7 +12,7 @@ const Overview = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const apiData = await fetch(getApiUrl('api/data')).then((res) =>
+      const apiData = await fetch(getApiUrl('/api/data')).then((res) =>
         res.json(),
       );
       setData(apiData);

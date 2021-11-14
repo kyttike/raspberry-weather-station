@@ -9,10 +9,9 @@ const CarouselWrapper = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const apiResult: string[] = await fetch(getApiUrl('api/pictures')).then(
+      const apiResult: string[] = await fetch(getApiUrl('/api/pictures')).then(
         (res) => res.json(),
       );
-      console.log(apiResult);
       setPictures(
         apiResult.filter((pictureUrl) => pictureUrl.indexOf('.html') === -1),
       );
@@ -20,7 +19,6 @@ const CarouselWrapper = () => {
     fetchData();
   }, []);
 
-  console.log(pictures);
   if (pictures.length === 0) {
     return null;
   }
@@ -28,7 +26,7 @@ const CarouselWrapper = () => {
   if (pictures.length === 1) {
     return (
       <div>
-        <img src={getApiUrl(pictures[0])} />
+        <img src={getApiUrl('/' + pictures[0])} />
       </div>
     );
   }
@@ -36,7 +34,7 @@ const CarouselWrapper = () => {
   return (
     <Carousel dynamicHeight={true} showThumbs={false} showStatus={false}>
       {pictures.map((picture) => (
-        <img key={picture} src={getApiUrl(picture)} />
+        <img key={picture} src={getApiUrl('/' +picture)} />
       ))}
     </Carousel>
   );
