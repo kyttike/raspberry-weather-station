@@ -11,11 +11,16 @@ export class AppController {
 
   @Get('data')
   async getAllData() {
-    return await this.appService.getPublicData();
+    return this.appService.getPublicData();
   }
 
   @Get('pictures')
   async getAllPictures() {
     return this.picturesService.getPicturesRecursively('pictures');
+  }
+
+  @Get('greenhouse')
+  async getGreenhouseData() {
+    return this.appService.getGreenhouseData();
   }
 }

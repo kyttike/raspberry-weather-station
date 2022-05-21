@@ -4,8 +4,11 @@ import { ApiData, FastRaspberryDBEntry, SlowRaspberryDBEntry } from './types';
 
 @Injectable()
 export class AppService {
-  private lastQueryTimestamp: Date = null;
-  private cachedData: ApiData = null;
+  private lastPublicQueryTimestamp: Date = null;
+  private cachedPublicData: ApiData = null;
+
+  private lastGreenhouseQueryTimestamp: Date = null;
+  private cachedGreenhouseData: SlowRaspberryDBEntry[] = null;
 
   constructor(private postgresService: PostgresService) {}
 
@@ -27,6 +30,17 @@ export class AppService {
       `),
     ]);
     return [datasets[0].rows, datasets[1].rows];
+  }
+
+  private async getGreenhouseDataFromDB(): Promise<SlowRaspberryDBEntry[]> {
+    const pool = this.postgresService.getPool();
+    const data = await pool.query<SlowRaspberryDBEntry>(`
+        SELECT "sht20Temperature", "sht20Humiditiy", "doorSensor", "createdAt"
+        FROM "RaspberrySlowEntry"
+        WHERE "createdAt" BETWEEN NOW() - INTERVAL '24 HOURS' AND NOW()
+        ORDER BY "createdAt" ASC
+      `);
+    return data.rows;
   }
 
   private getAverageSpeed(speeds: number[]) {
@@ -81,18 +95,35 @@ export class AppService {
 
   async getPublicData() {
     let shouldGetNewData = false;
-    if (this.cachedData === null || this.lastQueryTimestamp === null) {
-      shouldGetNewData = true;
-    } else if (Date.now() - this.lastQueryTimestamp.getTime() > 60 * 1000) {
+    if (
+      this.cachedPublicData === null ||
+      this.lastPublicQueryTimestamp === null ||
+      Date.now() - this.lastPublicQueryTimestamp.getTime() > 60 * 1000
+    ) {
       shouldGetNewData = true;
     }
 
     if (shouldGetNewData) {
-      this.cachedData = await this.getDatabaseData();
-      this.lastQueryTimestamp = new Date();
-      return this.cachedData;
-    } else {
-      return this.cachedData;
+      this.cachedPublicData = await this.getDatabaseData();
+      this.lastPublicQueryTimestamp = new Date();
     }
+    return this.cachedPublicData;
+  }
+
+  async getGreenhouseData() {
+    let shouldGetNewData = false;
+    if (
+      this.cachedGreenhouseData === null ||
+      this.lastGreenhouseQueryTimestamp === null ||
+      Date.now() - this.lastGreenhouseQueryTimestamp.getTime() > 60 * 1000
+    ) {
+      shouldGetNewData = true;
+    }
+
+    if (shouldGetNewData) {
+      this.cachedGreenhouseData = await this.getGreenhouseDataFromDB();
+      this.lastGreenhouseQueryTimestamp = new Date();
+    }
+    return this.cachedGreenhouseData;
   }
 }
