@@ -60,17 +60,22 @@ export class RasperryMonitoringService implements OnModuleInit {
 
     const {
       bme680: { humidity, pressure, temperature, gas },
+      sht20: { humidity: sht20Humidity, temperature: sht20Temperature },
+      door,
       stateful: { rain },
     } = data.slow;
 
     await pool.query(
-      'INSERT INTO "RaspberrySlowEntry"("bme680Humidity", "bme680Pressure", "bme680Temperature", "bme680Gas", "rainfall") VALUES ($1, $2, $3, $4, $5)',
+      'INSERT INTO "RaspberrySlowEntry"("bme680Humidity", "bme680Pressure", "bme680Temperature", "bme680Gas", "rainfall", "sht20Humidity", "sht20Temperature", "doorSensor") VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
       [
         humidity ?? null,
         pressure ?? null,
         temperature ?? null,
         gas ?? null,
         rain ?? null,
+        sht20Humidity ?? null,
+        sht20Temperature ?? null,
+        door ?? null,
       ],
     );
   }

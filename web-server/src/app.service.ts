@@ -18,8 +18,9 @@ export class AppService {
         WHERE "createdAt" BETWEEN NOW() - INTERVAL '24 HOURS' AND NOW()
         ORDER BY "createdAt" ASC
       `),
+
       pool.query<SlowRaspberryDBEntry>(`
-        SELECT *
+        SELECT "bme680Temperature", "bme680Pressure", "bme680Humidity", "bme680Gas", "rainfall", "createdAt"
         FROM "RaspberrySlowEntry"
         WHERE "createdAt" BETWEEN NOW() - INTERVAL '24 HOURS' AND NOW()
         ORDER BY "createdAt" ASC
@@ -78,7 +79,7 @@ export class AppService {
     return [concentratedFastData, slowData];
   }
 
-  async getData() {
+  async getPublicData() {
     let shouldGetNewData = false;
     if (this.cachedData === null || this.lastQueryTimestamp === null) {
       shouldGetNewData = true;

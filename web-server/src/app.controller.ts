@@ -11,7 +11,7 @@ export class AppController {
 
   @Get('data')
   async getAllData() {
-    return await this.appService.getData();
+    return await this.appService.getPublicData();
   }
 
   @Get('pictures')

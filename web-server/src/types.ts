@@ -12,6 +12,11 @@ export interface SlowRaspberrySensorData {
     temperature?: number;
     gas?: number;
   };
+  sht20: {
+    humidity?: number;
+    temperature?: number;
+  };
+  door: number;
   stateful: {
     rain?: number;
   };
@@ -24,6 +29,9 @@ export interface FastRaspberryDBEntry {
 }
 
 export interface SlowRaspberryDBEntry {
+  sht20Humidity?: number;
+  sht20Temperature?: number;
+  doorSensor?: number;
   bme680Temperature?: number;
   bme680Pressure?: number;
   bme680Humidity?: number;
