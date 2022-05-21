@@ -35,7 +35,7 @@ export class AppService {
   private async getGreenhouseDataFromDB(): Promise<SlowRaspberryDBEntry[]> {
     const pool = this.postgresService.getPool();
     const data = await pool.query<SlowRaspberryDBEntry>(`
-        SELECT "sht20Temperature", "sht20Humiditiy", "doorSensor", "createdAt"
+        SELECT "sht20Temperature", "sht20Humidity", "doorSensor", "createdAt"
         FROM "RaspberrySlowEntry"
         WHERE "createdAt" BETWEEN NOW() - INTERVAL '24 HOURS' AND NOW()
         ORDER BY "createdAt" ASC
