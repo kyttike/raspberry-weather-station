@@ -2,10 +2,9 @@ import React from 'react';
 import { getSunrise, getSunset } from 'sunrise-sunset-js';
 import {
   Moon,
-  Hemisphere,
   LunarPhase,
   // @ts-ignore
-} from 'lunarphase-js/dist/lunarphase-js.esm';
+} from 'lunarphase-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 

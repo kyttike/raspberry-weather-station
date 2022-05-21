@@ -7,7 +7,7 @@ export const roundWithDecimalPlaces = (
 };
 
 const API_BASE_URL = () =>
-  import.meta.env.PROD ? `${location.origin}` : 'http://127.0.0.1:3000';
-// import.meta.env.PROD ? `${location.origin}` : 'https://värska.ee/';
+  // import.meta.env.PROD ? `${location.origin}` : 'http://127.0.0.1:3000';
+  import.meta.env.PROD ? `${location.origin}` : 'https://värska.ee/';
 
 export const getApiUrl = (path: string) => API_BASE_URL() + path;
