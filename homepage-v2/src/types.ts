@@ -13,3 +13,10 @@ export type SlowData = {
   rainfall: number;
   createdAt: string;
 };
+
+export type GreenhouseData = {
+  sht20Temperature: number;
+  sht20Humidity: number;
+  doorSensor: boolean;
+  createdAt: string;
+}

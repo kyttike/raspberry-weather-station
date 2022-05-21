@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { ApiData, FastData, SlowData } from '../../types';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
-import Card from '../../ui/Card';
 
 type Props = {
   data: ApiData;
@@ -37,35 +36,6 @@ const combineData = (fastData: FastData[], slowData: SlowData[]) => {
 
 const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
   const [options, setOptions] = useState<Highcharts.Options>({});
-  useEffect(() => {
-    Highcharts.setOptions({
-      lang: {
-        weekdays: [
-          'Pühapäev',
-          'Esmaspäev',
-          'Teisipäev',
-          'Kolmapäev',
-          'Neljapäev',
-          'Reede',
-          'Laupäev',
-        ],
-        months: [
-          'jaanuar',
-          'veebrar',
-          'märts',
-          'aprill',
-          'mai',
-          'juuni',
-          'juuli',
-          'august',
-          'september',
-          'oktoober',
-          'november',
-          'detsember',
-        ],
-      },
-    });
-  }, []);
 
   useEffect(() => {
     const combinedData = combineData(fastData, slowData);
@@ -179,7 +149,7 @@ const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
 
       plotOptions: {
         series: {
-          pointPlacement: 'between',
+          pointPlacement: 'on',
         },
       },
 

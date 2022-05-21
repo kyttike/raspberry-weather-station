@@ -5,10 +5,14 @@ import WeatherGraph from './WeatherGraph';
 import Card from '../../ui/Card';
 import ToggleButton from '../../ui/ToggleButton';
 import { getApiUrl } from '../../utils';
+import Greenhouse from '../Greenhouse/Greenhouse';
 
 const Overview = () => {
   const [data, setData] = useState<ApiData>([[], []]);
-  const [tab, setTab] = useState<'current' | 'forecast'>('current');
+  const [tab, setTab] = useState<'current' | 'forecast' | 'greenhouse'>(
+    'current',
+  );
+  const [showGreenhouse, setShowGreenhouse] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,6 +22,13 @@ const Overview = () => {
       setData(apiData);
     };
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (typeof url.searchParams.get('kasvuhoone') === 'string') {
+      setShowGreenhouse(true);
+    }
   }, []);
 
   return (
@@ -40,6 +51,14 @@ const Overview = () => {
             >
               Ennustus
             </ToggleButton>
+            {showGreenhouse && (
+              <ToggleButton
+                onClick={() => setTab('greenhouse')}
+                isActive={tab === 'greenhouse'}
+              >
+                Kasvuhoone
+              </ToggleButton>
+            )}
           </div>
         </div>
         {tab === 'current' && (
@@ -60,6 +79,7 @@ const Overview = () => {
             </div>
           </div>
         )}
+        {tab === 'greenhouse' && <Greenhouse />}
       </Card>
     </>
   );
