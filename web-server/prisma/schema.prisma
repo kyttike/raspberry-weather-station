@@ -17,6 +17,9 @@ model RaspberrySlowEntry {
     bme680Humidity      Float?
     bme680Gas           Float?
     rainfall            Float?
+    sht20Temperature    Float?
+    sht20Humidity       Float?
+    doorSensor          Boolean?
     createdAt           DateTime    @default(now())
     deletedAt           DateTime?
 }
