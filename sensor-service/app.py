@@ -1,8 +1,10 @@
 from flask import Flask
 import bme680_sensor
+import sht20_sensor
 import rainfall_sensor
 import windspeed_sensor
 import winddirection_sensor
+import door_sensor
 import datetime
 
 app = Flask(__name__)
@@ -11,9 +13,13 @@ app = Flask(__name__)
 def get_slow_readings():
     bme680_result = bme680_sensor.get_reading()
     rainfall_result = rainfall_sensor.get_reading()
+    sht20_result = sht20_sensor.get_reading()
+    door_result = door_sensor.get_reading()
 
     return {
         "bme680": bme680_result,
+        "sht20": sht20_result,
+        "door": door_result,
         "stateful": {
             "rain": rainfall_result,
         }
