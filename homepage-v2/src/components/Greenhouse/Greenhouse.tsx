@@ -22,8 +22,12 @@ const smoothLine = (data: any[]) => {
   return data;
 };
 
+type EnhancedData = Omit<GreenhouseData, 'createdAt'> & {
+  createdAt: number;
+};
+
 const Greenhouse = () => {
-  const [data, setData] = useState<GreenhouseData[] | null>(null);
+  const [data, setData] = useState<EnhancedData[] | null>(null);
   const [options, setOptions] = useState<Highcharts.Options>({});
 
   useEffect(() => {
@@ -31,8 +35,18 @@ const Greenhouse = () => {
       const apiData = await fetch(getApiUrl('/api/greenhouse')).then((res) =>
         res.json(),
       );
-      setData(apiData);
-      console.log(apiData);
+      setData(
+        apiData.map((x: GreenhouseData): EnhancedData => {
+          const date = new Date(x.createdAt);
+          date.setSeconds(0);
+          date.setMilliseconds(0);
+
+          return {
+            ...x,
+            createdAt: date.valueOf(),
+          };
+        }),
+      );
     };
     fetchData();
   }, []);
@@ -158,10 +172,12 @@ const Greenhouse = () => {
           name: 'Temperatuur',
           type: 'spline',
           data: smoothLine(
-            data.map((datum) => ({
-              x: new Date(datum.createdAt),
-              y: round(datum.sht20Temperature),
-            })),
+            data.map((datum) => {
+              return {
+                x: datum.createdAt,
+                y: round(datum.sht20Temperature),
+              };
+            }),
           ),
           marker: {
             enabled: false,
@@ -185,10 +201,12 @@ const Greenhouse = () => {
           name: 'Niiskus',
           type: 'spline',
           data: smoothLine(
-            data.map((datum) => ({
-              x: new Date(datum.createdAt),
-              y: round(datum.sht20Humidity),
-            })),
+            data.map((datum) => {
+              return {
+                x: datum.createdAt,
+                y: round(datum.sht20Humidity),
+              };
+            }),
           ),
           marker: {
             enabled: false,
@@ -206,7 +224,6 @@ const Greenhouse = () => {
           zIndex: 0,
           color: '#cab5ff',
           turboThreshold: 1500,
-          dashStyle: 'ShortDot',
           yAxis: 1,
         },
       ],
@@ -239,7 +256,7 @@ const Greenhouse = () => {
         </p>
         <p>{lastDataPoint.doorSensor ? 'Uks on lahti' : 'Uks on kinni'}</p>
       </div>
-      <HighchartsReact highcharts={Highcharts} options={options} />;
+      <HighchartsReact highcharts={Highcharts} options={options} />
     </div>
   );
 };
