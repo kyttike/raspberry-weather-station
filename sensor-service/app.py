@@ -1,5 +1,5 @@
 from flask import Flask
-import bme680_sensor
+import bme280_sensor
 import sht20_sensor
 import rainfall_sensor
 import windspeed_sensor
@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 
 def get_slow_readings():
-    bme680_result = bme680_sensor.get_reading()
+    bme680_result = bme280_sensor.get_reading()
     rainfall_result = rainfall_sensor.get_reading()
     sht20_result = sht20_sensor.get_reading()
     door_result = door_sensor.get_reading()
