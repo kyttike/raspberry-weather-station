@@ -35,7 +35,7 @@ def readBME280ID(addr=DEVICE):
   (chip_id, chip_version) = bus.read_i2c_block_data(addr, REG_ID, 2)
   return (chip_id, chip_version)
 
-def readBME280All(addr=DEVICE):
+def get_reading(addr=DEVICE):
   # Register Addresses
   REG_DATA = 0xF7
   REG_CONTROL = 0xF4
@@ -55,17 +55,6 @@ def readBME280All(addr=DEVICE):
   bus.write_byte_data(addr, REG_CONTROL_HUM, OVERSAMPLE_HUM)
 
   control = OVERSAMPLE_TEMP<<5 | OVERSAMPLE_PRES<<2 | MODE
-
-def get_reading(addr=DEVICE):
-  # Register Addresses
-  REG_HUM_LSB = 0xFE
-
-  # Oversample setting - page 27
-  OVERSAMPLE_TEMP = 2
-  OVERSAMPLE_PRES = 2
-  # Oversample setting for humidity register - page 26
-  OVERSAMPLE_HUM = 2
-  bus.write_byte_data(addr, REG_CONTROL_HUM, OVERSAMPLE_HUM)
   bus.write_byte_data(addr, REG_CONTROL, control)
 
   # Read blocks of calibration data from EEPROM
