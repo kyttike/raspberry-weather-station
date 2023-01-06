@@ -7,6 +7,11 @@ type Props = {
   data: ApiData;
 };
 
+const datumFilter = (datum: ReturnType<typeof combineData>[0]) => {
+  const date = new Date(datum.date);
+  return date.getMinutes() === 0 || date.getMinutes() === 1;
+}
+
 const smoothLine = (data: any[]) => {
   let i = data.length,
     sum,
@@ -167,10 +172,7 @@ const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
           type: 'spline',
           data: smoothLine(
             combinedData
-              .filter((datum) => {
-                const date = new Date(datum.date);
-                return date.getMinutes() === 0;
-              })
+              .filter(datumFilter)
               .map((x) => ({
                 x: x.date,
                 y: Math.round(x.bme680Temperature * 10) / 10,
@@ -241,10 +243,7 @@ const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
           name: 'Õhurõhk',
           type: 'spline',
           data: combinedData
-            .filter((datum) => {
-              const date = new Date(datum.date);
-              return date.getMinutes() === 0;
-            })
+            .filter(datumFilter)
             .map((x) => ({
               x: x.date,
               y: Math.round(x.bme680Pressure * 10) / 10,
