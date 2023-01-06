@@ -7,11 +7,6 @@ type Props = {
   data: ApiData;
 };
 
-const datumFilter = (datum: ReturnType<typeof combineData>[0]) => {
-  const date = new Date(datum.date);
-  return date.getMinutes() === 0 || date.getMinutes() === 1;
-}
-
 const smoothLine = (data: any[]) => {
   let i = data.length,
     sum,
@@ -38,6 +33,8 @@ const combineData = (fastData: FastData[], slowData: SlowData[]) => {
     };
   });
 };
+
+type Datum = ReturnType<typeof combineData>[0];
 
 const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
   const [options, setOptions] = useState<Highcharts.Options>({});
@@ -172,11 +169,30 @@ const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
           type: 'spline',
           data: smoothLine(
             combinedData
-              .filter(datumFilter)
-              .map((x) => ({
-                x: x.date,
-                y: Math.round(x.bme680Temperature * 10) / 10,
-              })),
+              .reduce(
+                (
+                  [filteredData, lastHourSegment],
+                  datum: Datum,
+                ): [Datum[], string] => {
+                  const date = new Date(datum.date);
+                  const datumHourSegmentKey = `${date.getUTCDay()}-${date.getHours()}`;
+                  if (lastHourSegment !== datumHourSegmentKey) {
+                    filteredData.push(datum);
+                    return [filteredData, datumHourSegmentKey];
+                  }
+
+                  return [filteredData, lastHourSegment];
+                },
+                [[] as Datum[], '' as string] as const,
+              )[0]
+              .map((x) => {
+                const date = new Date(x.date);
+                date.setMinutes(0);
+                return {
+                  x: date.valueOf(),
+                  y: Math.round(x.bme680Temperature * 10) / 10,
+                };
+              }),
           ),
           marker: {
             enabled: false,
@@ -243,11 +259,30 @@ const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
           name: 'Õhurõhk',
           type: 'spline',
           data: combinedData
-            .filter(datumFilter)
-            .map((x) => ({
-              x: x.date,
-              y: Math.round(x.bme680Pressure * 10) / 10,
-            })),
+            .reduce(
+              (
+                [filteredData, lastHourSegment],
+                datum: Datum,
+              ): [Datum[], string] => {
+                const date = new Date(datum.date);
+                const datumHourSegmentKey = `${date.getUTCDay()}-${date.getHours()}`;
+                if (lastHourSegment !== datumHourSegmentKey) {
+                  filteredData.push(datum);
+                  return [filteredData, datumHourSegmentKey];
+                }
+
+                return [filteredData, lastHourSegment];
+              },
+              [[] as Datum[], '' as string] as const,
+            )[0]
+            .map((x) => {
+              const date = new Date(x.date);
+              date.setMinutes(0);
+              return {
+                x: date.valueOf(),
+                y: Math.round(x.bme680Pressure * 10) / 10,
+              };
+            }),
           // @ts-ignore
           color: Highcharts.getOptions().colors[2],
           marker: {
