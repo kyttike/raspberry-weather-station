@@ -134,7 +134,7 @@ def get_reading(addr=DEVICE):
     humidity = 0
 
   return {
-    "temperature": temperature/100.0,
+    "temperature": (temperature/100.0) - 2,
     "pressure": pressure/100.0,
     "humidity": humidity,
     "gas": 0,
