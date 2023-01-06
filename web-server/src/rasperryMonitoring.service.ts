@@ -80,7 +80,7 @@ export class RasperryMonitoringService implements OnModuleInit {
     );
   }
 
-  @Cron(CronExpression.EVERY_10_SECONDS)
+  @Cron('*/20 * * * * *')
   async measureRaspberry() {
     if (this.shouldSkipMonitoring) {
       return;
