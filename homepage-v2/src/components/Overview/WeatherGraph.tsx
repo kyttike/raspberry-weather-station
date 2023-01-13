@@ -41,6 +41,37 @@ const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
 
   useEffect(() => {
     const combinedData = combineData(fastData, slowData);
+
+    const rainData = Object.values(
+      combinedData.reduce(
+        (
+          acc: Record<
+            string,
+            {
+              sum: number;
+              date: number;
+            }
+          >,
+          curr,
+        ) => {
+          let date = new Date(curr.date);
+          const datumHourSegmentKey = `${date.getUTCDay()}-${date.getHours()}`;
+          if (!acc[datumHourSegmentKey]) {
+            date.setMinutes(0);
+            acc[datumHourSegmentKey] = {
+              sum: 0,
+              date: date.valueOf(),
+            };
+          }
+
+          acc[datumHourSegmentKey].sum += curr.rainfall;
+          return acc;
+        },
+        {},
+      ),
+    ).map(({ sum, date }) => ({ x: date, y: Math.round(sum * 10) / 10 }));
+    rainData.sort((a, b) => a.x - b.x);
+
     setOptions({
       xAxis: [
         {
@@ -215,24 +246,7 @@ const WeatherGraph = ({ data: [fastData, slowData], data }: Props) => {
         {
           name: 'Sademed',
           type: 'column',
-          data: combinedData.reduce(
-            (acc: { result: any[]; sum: number }, curr) => {
-              let date = new Date(curr.date);
-              acc.sum += curr.rainfall;
-              if (date.getMinutes() === 0) {
-                acc.result.push({
-                  x: curr.date,
-                  y: Math.round(acc.sum * 10) / 10,
-                });
-                acc.sum = 0;
-              }
-              return acc;
-            },
-            {
-              result: [],
-              sum: 0,
-            },
-          ).result,
+          data: rainData,
           color: '#68CFE8',
           yAxis: 1,
           groupPadding: 0,
